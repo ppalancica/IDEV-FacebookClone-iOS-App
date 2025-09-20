@@ -8,9 +8,18 @@ final class NewsFeedCell: UICollectionViewCell {
     
     var post: Post! {
         didSet {
-            let userId = post.userId
-            let username = userId > 0 ? "user\(userId)" : "Unknown User"
-            usernameLabel.text = username
+            if let userImageData {
+                avatarImageView.image = UIImage(data: userImageData)
+            } else {
+                avatarImageView.image = nil
+            }
+            if let username {
+                usernameLabel.text = username
+            } else {
+                let userId = post.userId
+                let username = userId > 0 ? "user\(userId)" : "Unknown User"
+                usernameLabel.text = username
+            }
             titleLabel.text = post.title
             bodyLabel.text = post.body
             let views = post.views
@@ -19,21 +28,8 @@ final class NewsFeedCell: UICollectionViewCell {
         }
     }
     
-    var username: String! {
-        didSet {
-            usernameLabel.text = username
-        }
-    }
-    
-    var userImageData: Data? {
-        didSet {
-            if let userImageData {
-                avatarImageView.image = UIImage(data: userImageData)
-            } else {
-                avatarImageView.image = nil
-            }
-        }
-    }
+    var username: String?
+    var userImageData: Data?
     
     private struct Constants {
         static let padding: CGFloat = 16

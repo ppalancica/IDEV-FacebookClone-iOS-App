@@ -3,6 +3,9 @@ import UIKit
 final class PostDetailsVC: UIViewController {
     
     var post: Post!
+    var username: String?
+    var userImageData: Data?
+    
     var onAvatarOrUsernameTapped: ((Int) -> Void)?
     
     private struct Constants {
@@ -95,11 +98,18 @@ final class PostDetailsVC: UIViewController {
     }
     
     private func loadPostContents() {
-        guard let post else { return }
-        
-        let userId = post.userId
-        let username = userId > 0 ? "user\(userId)" : "Unknown User"
-        usernameLabel.text = username
+        if let userImageData {
+            avatarImageView.image = UIImage(data: userImageData)
+        } else {
+            avatarImageView.image = nil
+        }
+        if let username {
+            usernameLabel.text = username
+        } else {
+            let userId = post.userId
+            let username = userId > 0 ? "user\(userId)" : "Unknown User"
+            usernameLabel.text = username
+        }
         titleLabel.text = post.title
         bodyLabel.text = post.body
         let views = post.views

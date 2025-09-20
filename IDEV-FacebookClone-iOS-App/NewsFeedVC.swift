@@ -90,8 +90,6 @@ final class NewsFeedVC: UICollectionViewController {
         
         let post = posts[indexPath.item]
         
-        cell.post = post
-        
         if let username = userIdToUser[post.userId]?.username {
             cell.username = username
         }
@@ -103,6 +101,8 @@ final class NewsFeedVC: UICollectionViewController {
         cell.onAvatarOrUsernameTapped = { [weak self] userId in
             self?.navigateToUser(with: userId)
         }
+        
+        cell.post = post
     
         return cell
     }
@@ -112,8 +112,17 @@ final class NewsFeedVC: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView,
                                  didSelectItemAt indexPath: IndexPath) {
         
+        let post = posts[indexPath.item]
         let postDetailsVC = PostDetailsVC()
-        postDetailsVC.post = posts[indexPath.item]
+        postDetailsVC.post = post
+        
+        if let username = userIdToUser[post.userId]?.username {
+            postDetailsVC.username = username
+        }
+        
+        if let imageData = userIdToImageData[post.userId] {
+            postDetailsVC.userImageData = imageData
+        }
         
         postDetailsVC.onAvatarOrUsernameTapped = { [weak self] userId in
             self?.navigateToUser(with: userId)
