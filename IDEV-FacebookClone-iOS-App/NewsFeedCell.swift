@@ -12,6 +12,9 @@ final class NewsFeedCell: UICollectionViewCell {
         didSet {
             titleLabel.text = post?.title
             bodyLabel.text = post?.body
+            let views = post?.views ?? 0
+            let viewsText = views > 0 ? "\(views) users viewed this post" : "No user viewed this post"
+            viewsLabel.text = viewsText
         }
     }
     
@@ -31,6 +34,17 @@ final class NewsFeedCell: UICollectionViewCell {
         return label
     }()
     
+    let viewsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 1
+//        label.backgroundColor = UIColor(white: 0.92, alpha: 1)
+        label.backgroundColor = .white
+        label.textColor = .black
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -46,7 +60,10 @@ final class NewsFeedCell: UICollectionViewCell {
         
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
-            bodyLabel
+            bodyLabel,
+            UIStackView(arrangedSubviews: [
+                viewsLabel, UIView()
+            ])
         ])
         stackView.axis = .vertical
         stackView.spacing = 16
