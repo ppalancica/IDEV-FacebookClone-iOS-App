@@ -6,6 +6,7 @@ final class NewsFeedVC: UICollectionViewController {
     private let userLoader: UserProfileLoader
     private var posts: [Post]
     
+    private var userIdToUser: [Int: User] = [:]
     private var userIdToUsername: [Int: String] = [:]
     private var userIdToImageData: [Int: Data?] = [:]
     
@@ -47,6 +48,7 @@ final class NewsFeedVC: UICollectionViewController {
     }
     
     private func loadUsernamesAndAvatars() {
+        var userIdToUser: [Int: User?] = [:]
         var userIdToUsername: [Int: String] = [:]
         var userIdToImageData: [Int: Data?] = [:]
         
@@ -58,6 +60,7 @@ final class NewsFeedVC: UICollectionViewController {
             self.userLoader.loadUser(with: post.userId) { user, error in
                 dispatchGroup.leave()
                 
+                userIdToUser[post.userId] = user
                 userIdToUsername[post.userId] = user?.username ?? "Unknown User"
                 
                 if let userImage = user?.image {
@@ -106,9 +109,8 @@ final class NewsFeedVC: UICollectionViewController {
         
         cell.onAvatarOrUsernameTapped = { [weak self] userId in
             print(userId)
-            
             let userDetailsVC = UserDetailsVC()
-            
+            userDetailsVC.user = self?.userIdToUser[userId]
             self?.navigationController?.pushViewController(userDetailsVC, animated: true)
         }
     
