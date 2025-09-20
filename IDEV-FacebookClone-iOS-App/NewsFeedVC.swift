@@ -2,7 +2,11 @@ import UIKit
 
 final class NewsFeedVC: UICollectionViewController {
     
+    private let loader: NewsFeedLoader
+    
     init() {
+        loader = NewsFeedLoader()
+        
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
     
@@ -14,6 +18,8 @@ final class NewsFeedVC: UICollectionViewController {
         super.viewDidLoad()
         
         collectionView?.register(NewsFeedCell.self, forCellWithReuseIdentifier: NewsFeedCell.cellReuseID)
+        
+        loader.loadPosts()
     }
 
     // MARK: UICollectionViewDataSource
