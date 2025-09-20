@@ -28,7 +28,8 @@ final class NewsFeedVC: UICollectionViewController {
             for: indexPath
         ) as! NewsFeedCell
         
-        cell.backgroundColor = .blue
+        cell.titleLabel.text = "This is a Post Title"
+        cell.bodyLabel.text = "This is a Post Body"
     
         return cell
     }
