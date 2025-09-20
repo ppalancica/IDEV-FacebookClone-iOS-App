@@ -24,7 +24,7 @@ final class NewsFeedCell: UICollectionViewCell {
             bodyLabel.text = post.body
             let views = post.views
             let viewsText = views > 0 ? "\(views) users viewed this post" : "No user viewed this post"
-            viewsLabel.text = viewsText
+            viewsLabel.text = "(" + viewsText + ")"
         }
     }
     
@@ -71,8 +71,6 @@ final class NewsFeedCell: UICollectionViewCell {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 1
-        label.backgroundColor = .white
-        label.textColor = .black
         return label
     }()
     

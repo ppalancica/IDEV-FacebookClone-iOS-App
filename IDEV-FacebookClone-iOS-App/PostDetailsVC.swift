@@ -48,11 +48,28 @@ final class PostDetailsVC: UIViewController {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 1
-        label.backgroundColor = .white
         label.textColor = .black
         return label
     }()
-
+    
+    let likesLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 1
+        label.text = "90 Likes"
+        return label
+    }()
+    
+    let dislikesLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 1
+        label.text = "10 Dislikes"
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,6 +86,10 @@ final class PostDetailsVC: UIViewController {
         ])
         userView.spacing = 8
         
+        let reactionsView = UIStackView(arrangedSubviews: [
+            likesLabel, UIView(), dislikesLabel
+        ])
+        
         let stackView = UIStackView(arrangedSubviews: [
             userView,
             titleLabel,
@@ -76,6 +97,7 @@ final class PostDetailsVC: UIViewController {
             UIStackView(arrangedSubviews: [
                 viewsLabel, UIView()
             ]),
+            reactionsView,
             UIView() // The only difference comparing to NewsFeedCell
         ])
         stackView.axis = .vertical
@@ -114,7 +136,7 @@ final class PostDetailsVC: UIViewController {
         bodyLabel.text = post.body
         let views = post.views
         let viewsText = views > 0 ? "\(views) users viewed this post" : "No user viewed this post"
-        viewsLabel.text = viewsText
+        viewsLabel.text = "(" + viewsText + ")"
     }
     
     @objc private func userAvatarOrUsernameTapped() {
