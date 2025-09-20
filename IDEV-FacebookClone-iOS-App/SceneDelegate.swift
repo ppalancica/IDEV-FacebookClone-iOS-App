@@ -12,8 +12,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: scence)
         let rootVC = RootVC()
+        let nc = UINavigationController(rootViewController: rootVC)
         
-        window.rootViewController = UINavigationController(rootViewController: rootVC)
+        nc.navigationBar.prefersLargeTitles = true
+        window.rootViewController = nc
         self.window = window
         window.makeKeyAndVisible()
     }

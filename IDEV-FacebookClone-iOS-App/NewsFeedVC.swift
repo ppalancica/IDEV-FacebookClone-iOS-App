@@ -10,6 +10,9 @@ final class NewsFeedVC: UICollectionViewController {
         posts = []
         
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        navigationItem.title = "News Feed"
+        navigationItem.largeTitleDisplayMode = .automatic
     }
     
     required init?(coder: NSCoder) {
