@@ -123,11 +123,6 @@ extension NewsFeedVC: UICollectionViewDelegateFlowLayout {
         let post = posts[indexPath.item]
         
         dummyCell.post = post
-        
-        if let username = userIdToUsername[post.userId] {
-            dummyCell.username = username
-        }
-        
         dummyCell.layoutIfNeeded()
         
         let estimatedSize = dummyCell.systemLayoutSizeFitting(CGSize(width: view.frame.width, height: 300))
