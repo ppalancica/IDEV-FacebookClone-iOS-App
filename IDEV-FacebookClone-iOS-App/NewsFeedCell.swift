@@ -18,6 +18,22 @@ final class NewsFeedCell: UICollectionViewCell {
         }
     }
     
+    let avatarImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.backgroundColor = UIColor(white: 0.92, alpha: 1)
+        imageView.layer.cornerRadius = 22
+        return imageView
+    }()
+    
+    let usernameLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .boldSystemFont(ofSize: 16)
+        label.numberOfLines = 1
+        label.text = "username"
+        return label
+    }()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -39,7 +55,6 @@ final class NewsFeedCell: UICollectionViewCell {
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 1
-//        label.backgroundColor = UIColor(white: 0.92, alpha: 1)
         label.backgroundColor = .white
         label.textColor = .black
         return label
@@ -58,7 +73,13 @@ final class NewsFeedCell: UICollectionViewCell {
     private func setupUI() {
         contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         
+        let userView = UIStackView(arrangedSubviews: [
+            avatarImageView, usernameLabel
+        ])
+        userView.spacing = 8
+        
         let stackView = UIStackView(arrangedSubviews: [
+            userView,
             titleLabel,
             bodyLabel,
             UIStackView(arrangedSubviews: [
@@ -71,6 +92,9 @@ final class NewsFeedCell: UICollectionViewCell {
         contentView.addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        avatarImageView.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        avatarImageView.heightAnchor.constraint(equalToConstant: 44).isActive = true
         
         stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding).isActive = true
         stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding).isActive = true
