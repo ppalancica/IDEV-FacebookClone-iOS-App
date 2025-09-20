@@ -21,6 +21,12 @@ final class NewsFeedCell: UICollectionViewCell {
         }
     }
     
+    var username: String? {
+        didSet {
+            usernameLabel.text = username
+        }
+    }
+    
     let avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(white: 0.92, alpha: 1)

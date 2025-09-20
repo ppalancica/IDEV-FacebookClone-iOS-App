@@ -2,11 +2,15 @@ import UIKit
 
 final class NewsFeedVC: UICollectionViewController {
     
-    private let loader: NewsFeedLoader
+    private let postsLoader: NewsFeedLoader
+    private let userLoader: UserProfileLoader
     private var posts: [Post]
     
+    private var userIdToUsername: [Int: String] = [:]
+    
     init() {
-        loader = NewsFeedLoader()
+        postsLoader = NewsFeedLoader()
+        userLoader = UserProfileLoader()
         posts = []
         
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
@@ -24,12 +28,35 @@ final class NewsFeedVC: UICollectionViewController {
         super.viewDidLoad()
         
         collectionView?.register(NewsFeedCell.self, forCellWithReuseIdentifier: NewsFeedCell.cellReuseID)
-        
-        loader.loadPosts { posts, error in
+
+        postsLoader.loadPosts { posts, error in
+            // TODO: Handle errors
+            
             if let posts {
                 DispatchQueue.main.async {
                     self.posts = posts
                     self.collectionView.reloadData()
+                }
+                
+                var userIdToUsername: [Int: String] = [:]
+                let dispatchGroup = DispatchGroup()
+                
+                for post in posts {
+                    dispatchGroup.enter()
+                    
+                    self.userLoader.loadUser(with: post.userId) { user, error in
+                        dispatchGroup.leave()
+                        
+                        userIdToUsername[post.userId] = user?.username ?? "Unknown User"
+                    }
+                }
+                
+                dispatchGroup.notify(queue: .main) {
+                    print("All task completed")
+                    // self.activityIndicatorView.stopAnimating()
+                    // self.posts = posts
+                    self.userIdToUsername = userIdToUsername
+                    self.collectionView.reloadData() // We are on Main Queue here, so no need to explicitly dispatch to Main Queue
                 }
             }
         }
@@ -50,6 +77,10 @@ final class NewsFeedVC: UICollectionViewController {
         let post = posts[indexPath.item]
         
         cell.post = post
+        
+        if let username = userIdToUsername[post.userId] {
+            cell.username = username
+        }
     
         return cell
     }
@@ -72,6 +103,11 @@ extension NewsFeedVC: UICollectionViewDelegateFlowLayout {
         let post = posts[indexPath.item]
         
         dummyCell.post = post
+        
+        if let username = userIdToUsername[post.userId] {
+            dummyCell.username = username
+        }
+        
         dummyCell.layoutIfNeeded()
         
         let estimatedSize = dummyCell.systemLayoutSizeFitting(CGSize(width: view.frame.width, height: 300))
