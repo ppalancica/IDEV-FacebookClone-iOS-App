@@ -12,6 +12,7 @@ final class NewsFeedCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .boldSystemFont(ofSize: 24)
+        label.numberOfLines = 0
         return label
     }()
     
@@ -19,6 +20,7 @@ final class NewsFeedCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 16)
+        label.numberOfLines = 4
         return label
     }()
     
@@ -41,7 +43,7 @@ final class NewsFeedCell: UICollectionViewCell {
             UIView(),
         ])
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = 8
         
         contentView.addSubview(stackView)
         
@@ -49,7 +51,7 @@ final class NewsFeedCell: UICollectionViewCell {
         
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding).isActive = true
         stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.padding).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding).isActive = true
     }
 }
