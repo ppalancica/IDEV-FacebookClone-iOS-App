@@ -4,6 +4,10 @@ final class NewsFeedCell: UICollectionViewCell {
     
     static let cellReuseID = "NewsFeedCell"
     
+    struct Constants {
+        static let padding: CGFloat = 8
+    }
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -32,7 +36,6 @@ final class NewsFeedCell: UICollectionViewCell {
         contentView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         
         let stackView = UIStackView(arrangedSubviews: [
-            UIView(),
             titleLabel,
             bodyLabel,
             UIView(),
@@ -44,9 +47,9 @@ final class NewsFeedCell: UICollectionViewCell {
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        stackView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.padding).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.padding).isActive = true
     }
 }
