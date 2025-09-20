@@ -19,7 +19,11 @@ final class NewsFeedVC: UICollectionViewController {
         
         collectionView?.register(NewsFeedCell.self, forCellWithReuseIdentifier: NewsFeedCell.cellReuseID)
         
-        loader.loadPosts()
+        loader.loadPosts { posts, error in
+            if let posts {
+                print(posts)
+            }
+        }
     }
 
     // MARK: UICollectionViewDataSource
