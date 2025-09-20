@@ -110,6 +110,10 @@ final class NewsFeedVC: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView,
                                  didSelectItemAt indexPath: IndexPath) {
         
+        let postDetailsVC = PostDetailsVC()
+        postDetailsVC.post = posts[indexPath.item]
+        
+        navigationController?.pushViewController(postDetailsVC, animated: true)
     }
 }
 
