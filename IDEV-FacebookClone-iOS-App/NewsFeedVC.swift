@@ -1,7 +1,5 @@
 import UIKit
 
-private let reuseIdentifier = "Cell"
-
 final class NewsFeedVC: UICollectionViewController {
     
     init() {
@@ -15,7 +13,7 @@ final class NewsFeedVC: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView?.register(NewsFeedCell.self, forCellWithReuseIdentifier: NewsFeedCell.cellReuseID)
     }
 
     // MARK: UICollectionViewDataSource
@@ -25,11 +23,12 @@ final class NewsFeedVC: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-    
-        // Configure the cell
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: NewsFeedCell.cellReuseID,
+            for: indexPath
+        ) as! NewsFeedCell
         
-        cell.backgroundColor = .red
+        cell.backgroundColor = .blue
     
         return cell
     }
@@ -39,5 +38,15 @@ final class NewsFeedVC: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView,
                                  didSelectItemAt indexPath: IndexPath) {
         
+    }
+}
+
+extension NewsFeedVC: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSizeMake(view.frame.size.width, 200)
     }
 }
