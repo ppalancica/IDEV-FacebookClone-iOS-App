@@ -52,6 +52,16 @@ final class PostDetailsVC: UIViewController {
         return label
     }()
     
+    let tagsLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 1
+        label.text = "History"
+        label.backgroundColor = .white
+        return label
+    }()
+    
     let likesLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -86,6 +96,11 @@ final class PostDetailsVC: UIViewController {
         ])
         userView.spacing = 8
         
+        let tagsView = UIStackView(arrangedSubviews: [
+            tagsLabel
+        ])
+        tagsView.spacing = 8
+        
         let reactionsView = UIStackView(arrangedSubviews: [
             likesLabel, UIView(), dislikesLabel
         ])
@@ -97,6 +112,7 @@ final class PostDetailsVC: UIViewController {
             UIStackView(arrangedSubviews: [
                 viewsLabel, UIView()
             ]),
+            tagsView,
             reactionsView,
             UIView() // The only difference comparing to NewsFeedCell
         ])
@@ -137,6 +153,9 @@ final class PostDetailsVC: UIViewController {
         let views = post.views
         let viewsText = views > 0 ? "\(views) users viewed this post" : "No user viewed this post"
         viewsLabel.text = "(" + viewsText + ")"
+        
+        likesLabel.text = "\(post.reactions.likes) Likes"
+        dislikesLabel.text = "\(post.reactions.dislikes) Dislikes"
     }
     
     @objc private func userAvatarOrUsernameTapped() {

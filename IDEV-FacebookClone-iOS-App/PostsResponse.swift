@@ -8,5 +8,6 @@ struct Post: Decodable {
     let views: Int
     let userId: Int
     
+    let tags: [String]
     let reactions: Reactions
 }
