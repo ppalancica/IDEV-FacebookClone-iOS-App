@@ -7,6 +7,6 @@ final class RootVC: UIViewController {
 
         let newsFeedVC = NewsFeedVC()
         
-        navigationController?.pushViewController(newsFeedVC, animated: true)
+        navigationController?.pushViewController(newsFeedVC, animated: false)
     }
 }

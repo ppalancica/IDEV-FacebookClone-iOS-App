@@ -13,6 +13,7 @@ final class NewsFeedVC: UICollectionViewController {
         
         navigationItem.title = "News Feed"
         navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.hidesBackButton = true
     }
     
     required init?(coder: NSCoder) {
