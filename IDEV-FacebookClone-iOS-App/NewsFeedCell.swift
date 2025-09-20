@@ -5,7 +5,14 @@ final class NewsFeedCell: UICollectionViewCell {
     static let cellReuseID = "NewsFeedCell"
     
     struct Constants {
-        static let padding: CGFloat = 8
+        static let padding: CGFloat = 16
+    }
+    
+    var post: Post? {
+        didSet {
+            titleLabel.text = post?.title
+            bodyLabel.text = post?.body
+        }
     }
     
     let titleLabel: UILabel = {
@@ -20,7 +27,7 @@ final class NewsFeedCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 16)
-        label.numberOfLines = 4
+        label.numberOfLines = 0
         return label
     }()
     
@@ -39,19 +46,18 @@ final class NewsFeedCell: UICollectionViewCell {
         
         let stackView = UIStackView(arrangedSubviews: [
             titleLabel,
-            bodyLabel,
-            UIView(),
+            bodyLabel
         ])
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 16
         
         contentView.addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        stackView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.padding).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding).isActive = true
+        stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.padding).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.padding).isActive = true
     }
 }

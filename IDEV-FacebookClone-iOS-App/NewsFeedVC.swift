@@ -49,8 +49,7 @@ final class NewsFeedVC: UICollectionViewController {
         
         let post = posts[indexPath.item]
         
-        cell.titleLabel.text = post.title
-        cell.bodyLabel.text = post.body
+        cell.post = post
     
         return cell
     }
@@ -64,11 +63,19 @@ final class NewsFeedVC: UICollectionViewController {
 }
 
 extension NewsFeedVC: UICollectionViewDelegateFlowLayout {
-    
+        
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        return CGSizeMake(view.frame.size.width, 200)
+        let dummyCell = NewsFeedCell(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
+        let post = posts[indexPath.item]
+        
+        dummyCell.post = post
+        dummyCell.layoutIfNeeded()
+        
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(CGSize(width: view.frame.width, height: 300))
+        
+        return CGSize(width: view.frame.width, height: estimatedSize.height)
     }
 }
