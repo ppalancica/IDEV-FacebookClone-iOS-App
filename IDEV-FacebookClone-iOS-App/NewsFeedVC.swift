@@ -7,8 +7,7 @@ final class NewsFeedVC: UICollectionViewController {
     private var posts: [Post]
     
     private var userIdToUser: [Int: User] = [:]
-    private var userIdToUsername: [Int: String] = [:]
-    private var userIdToImageData: [Int: Data?] = [:]
+    private var userIdToImageData: [Int: Data] = [:]
     
     init() {
         postsLoader = NewsFeedLoader()
@@ -48,9 +47,8 @@ final class NewsFeedVC: UICollectionViewController {
     }
     
     private func loadUsernamesAndAvatars() {
-        var userIdToUser: [Int: User?] = [:]
-        var userIdToUsername: [Int: String] = [:]
-        var userIdToImageData: [Int: Data?] = [:]
+        var userIdToUser: [Int: User] = [:]
+        var userIdToImageData: [Int: Data] = [:]
         
         let dispatchGroup = DispatchGroup()
         
@@ -61,20 +59,18 @@ final class NewsFeedVC: UICollectionViewController {
                 dispatchGroup.leave()
                 
                 userIdToUser[post.userId] = user
-                userIdToUsername[post.userId] = user?.username ?? "Unknown User"
                 
-                if let userImage = user?.image {
-                    let imageUrl = URL(string: userImage)!
-                    let imageData = try? Data(contentsOf: imageUrl)
-                    
-                    userIdToImageData[post.userId] = imageData
+                if let userImage = user?.image, let imageUrl = URL(string: userImage) {
+                    if let imageData = try? Data(contentsOf: imageUrl) {
+                        userIdToImageData[post.userId] = imageData
+                    }
                 }
             }
         }
         
         dispatchGroup.notify(queue: .main) {
             print("All task completed")
-            self.userIdToUsername = userIdToUsername
+            self.userIdToUser = userIdToUser
             self.userIdToImageData = userIdToImageData
             self.collectionView.reloadData() // We are on Main Queue here, so no need to explicitly dispatch to Main Queue
         }
@@ -99,7 +95,7 @@ final class NewsFeedVC: UICollectionViewController {
         
         cell.post = post
         
-        if let username = userIdToUsername[post.userId] {
+        if let username = userIdToUser[post.userId]?.username {
             cell.username = username
         }
         
