@@ -52,13 +52,30 @@ final class PostDetailsVC: UIViewController {
         return label
     }()
     
-    let tagsLabel: UILabel = {
+    let tagsLabel1: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 1
-        label.text = "History"
-        label.backgroundColor = .white
+        label.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        return label
+    }()
+    
+    let tagsLabel2: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 1
+        label.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        return label
+    }()
+    
+    let tagsLabel3: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 1
+        label.backgroundColor = UIColor(white: 0.9, alpha: 1)
         return label
     }()
     
@@ -97,7 +114,7 @@ final class PostDetailsVC: UIViewController {
         userView.spacing = 8
         
         let tagsView = UIStackView(arrangedSubviews: [
-            tagsLabel
+            tagsLabel1, tagsLabel2, tagsLabel3, UIView()
         ])
         tagsView.spacing = 8
         
@@ -148,11 +165,16 @@ final class PostDetailsVC: UIViewController {
             let username = userId > 0 ? "user\(userId)" : "Unknown User"
             usernameLabel.text = username
         }
+        
         titleLabel.text = post.title
         bodyLabel.text = post.body
         let views = post.views
         let viewsText = views > 0 ? "\(views) users viewed this post" : "No user viewed this post"
         viewsLabel.text = "(" + viewsText + ")"
+        
+        if post.tags.count > 0 { tagsLabel1.text = post.tags[0] }
+        if post.tags.count > 1 { tagsLabel2.text = post.tags[1] }
+        if post.tags.count > 2 { tagsLabel3.text = post.tags[2] }
         
         likesLabel.text = "\(post.reactions.likes) Likes"
         dislikesLabel.text = "\(post.reactions.dislikes) Dislikes"
