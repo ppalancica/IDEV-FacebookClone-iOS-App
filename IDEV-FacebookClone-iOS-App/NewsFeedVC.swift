@@ -71,7 +71,6 @@ final class NewsFeedVC: UICollectionViewController {
         
         dispatchGroup.notify(queue: .main) {
             print("All task completed")
-            // self.activityIndicatorView.stopAnimating()
             self.userIdToUsername = userIdToUsername
             self.userIdToImageData = userIdToImageData
             self.collectionView.reloadData() // We are on Main Queue here, so no need to explicitly dispatch to Main Queue
@@ -80,11 +79,14 @@ final class NewsFeedVC: UICollectionViewController {
     
     // MARK: UICollectionViewDataSource
 
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
 
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView,
+                                 cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: NewsFeedCell.cellReuseID,
             for: indexPath
