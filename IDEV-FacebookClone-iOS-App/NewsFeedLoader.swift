@@ -27,8 +27,12 @@ final class NewsFeedLoader {
                 return
             }
             
-            let s = String(data: data, encoding: .utf8)
-            print(s)
+            do {
+                let posts = try JSONDecoder().decode(NewsFeedPosts.self, from: data)
+                print(posts)
+            } catch let jsonError {
+                print("Error: ", jsonError)
+            }
         }.resume()
     }
 }
