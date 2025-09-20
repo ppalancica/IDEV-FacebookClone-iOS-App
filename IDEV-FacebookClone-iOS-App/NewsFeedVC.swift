@@ -37,10 +37,7 @@ final class NewsFeedVC: UICollectionViewController {
                 DispatchQueue.main.async {
                     self.posts = posts
                     self.collectionView.reloadData()
-                    
-                    DispatchQueue.global(qos: .background).async {
-                        self.loadUsernamesAndAvatars()
-                    }
+                    self.loadUsernamesAndAvatars() // Will do some additional loading in background
                 }
             }
         }
