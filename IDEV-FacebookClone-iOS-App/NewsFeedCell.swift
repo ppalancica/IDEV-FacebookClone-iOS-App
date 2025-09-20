@@ -8,6 +8,8 @@ final class NewsFeedCell: UICollectionViewCell {
         static let padding: CGFloat = 16
     }
     
+    var onAvatarOrUsernameTapped: ((Int) -> Void)?
+    
     var post: Post? {
         didSet {
             titleLabel.text = post?.title
@@ -118,5 +120,14 @@ final class NewsFeedCell: UICollectionViewCell {
         stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding).isActive = true
         stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding).isActive = true
         stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.padding).isActive = true
+        
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(userAvatarOrUsernameTapped))
+        userView.addGestureRecognizer(tapGR)
+    }
+    
+    @objc private func userAvatarOrUsernameTapped() {
+        if let userId = post?.userId {
+            onAvatarOrUsernameTapped?(userId)
+        }
     }
 }

@@ -103,6 +103,14 @@ final class NewsFeedVC: UICollectionViewController {
         if let imageData = userIdToImageData[post.userId] {
             cell.userImageData = imageData
         }
+        
+        cell.onAvatarOrUsernameTapped = { [weak self] userId in
+            print(userId)
+            
+            let userDetailsVC = UserDetailsVC()
+            
+            self?.navigationController?.pushViewController(userDetailsVC, animated: true)
+        }
     
         return cell
     }
