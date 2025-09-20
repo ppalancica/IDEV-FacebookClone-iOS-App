@@ -5,7 +5,7 @@ final class RootVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let newsFeedVC = NewsFeedVC(collectionViewLayout: UICollectionViewFlowLayout())
+        let newsFeedVC = NewsFeedVC()
         
         navigationController?.pushViewController(newsFeedVC, animated: true)
     }
