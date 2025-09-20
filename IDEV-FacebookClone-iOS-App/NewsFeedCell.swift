@@ -4,26 +4,22 @@ final class NewsFeedCell: UICollectionViewCell {
     
     static let cellReuseID = "NewsFeedCell"
     
-    struct Constants {
-        static let padding: CGFloat = 16
-    }
-    
     var onAvatarOrUsernameTapped: ((Int) -> Void)?
     
-    var post: Post? {
+    var post: Post! {
         didSet {
-            titleLabel.text = post?.title
-            bodyLabel.text = post?.body
-            let views = post?.views ?? 0
-            let viewsText = views > 0 ? "\(views) users viewed this post" : "No user viewed this post"
-            viewsLabel.text = viewsText
-            let userId = post?.userId ?? 0
+            let userId = post.userId
             let username = userId > 0 ? "user\(userId)" : "Unknown User"
             usernameLabel.text = username
+            titleLabel.text = post.title
+            bodyLabel.text = post.body
+            let views = post.views
+            let viewsText = views > 0 ? "\(views) users viewed this post" : "No user viewed this post"
+            viewsLabel.text = viewsText
         }
     }
     
-    var username: String? {
+    var username: String! {
         didSet {
             usernameLabel.text = username
         }
@@ -37,6 +33,10 @@ final class NewsFeedCell: UICollectionViewCell {
                 avatarImageView.image = nil
             }
         }
+    }
+    
+    private struct Constants {
+        static let padding: CGFloat = 16
     }
     
     let avatarImageView: UIImageView = {
@@ -126,8 +126,6 @@ final class NewsFeedCell: UICollectionViewCell {
     }
     
     @objc private func userAvatarOrUsernameTapped() {
-        if let userId = post?.userId {
-            onAvatarOrUsernameTapped?(userId)
-        }
+        onAvatarOrUsernameTapped?(post.userId)
     }
 }

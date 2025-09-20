@@ -101,10 +101,7 @@ final class NewsFeedVC: UICollectionViewController {
         }
         
         cell.onAvatarOrUsernameTapped = { [weak self] userId in
-            print(userId)
-            let userDetailsVC = UserDetailsVC()
-            userDetailsVC.user = self?.userIdToUser[userId]
-            self?.navigationController?.pushViewController(userDetailsVC, animated: true)
+            self?.navigateToUser(with: userId)
         }
     
         return cell
@@ -118,7 +115,18 @@ final class NewsFeedVC: UICollectionViewController {
         let postDetailsVC = PostDetailsVC()
         postDetailsVC.post = posts[indexPath.item]
         
+        postDetailsVC.onAvatarOrUsernameTapped = { [weak self] userId in
+            self?.navigateToUser(with: userId)
+        }
+        
         navigationController?.pushViewController(postDetailsVC, animated: true)
+    }
+    
+    private func navigateToUser(with userId: Int) {
+        print(userId)
+        let userDetailsVC = UserDetailsVC()
+        userDetailsVC.user = userIdToUser[userId]
+        navigationController?.pushViewController(userDetailsVC, animated: true)
     }
 }
 
@@ -128,13 +136,13 @@ extension NewsFeedVC: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let dummyCell = NewsFeedCell(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300))
+        let dummyCell = NewsFeedCell(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 1000))
         let post = posts[indexPath.item]
         
         dummyCell.post = post
         dummyCell.layoutIfNeeded()
         
-        let estimatedSize = dummyCell.systemLayoutSizeFitting(CGSize(width: view.frame.width, height: 300))
+        let estimatedSize = dummyCell.systemLayoutSizeFitting(CGSize(width: view.frame.width, height: 1000))
         
         return CGSize(width: view.frame.width, height: estimatedSize.height)
     }
