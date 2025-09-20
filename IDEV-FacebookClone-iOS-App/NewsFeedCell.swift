@@ -27,6 +27,16 @@ final class NewsFeedCell: UICollectionViewCell {
         }
     }
     
+    var userImageData: Data? {
+        didSet {
+            if let userImageData {
+                avatarImageView.image = UIImage(data: userImageData)
+            } else {
+                avatarImageView.image = nil
+            }
+        }
+    }
+    
     let avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(white: 0.92, alpha: 1)

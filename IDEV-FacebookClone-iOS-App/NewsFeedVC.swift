@@ -7,6 +7,7 @@ final class NewsFeedVC: UICollectionViewController {
     private var posts: [Post]
     
     private var userIdToUsername: [Int: String] = [:]
+    private var userIdToImageData: [Int: Data?] = [:]
     
     init() {
         postsLoader = NewsFeedLoader()
@@ -36,32 +37,47 @@ final class NewsFeedVC: UICollectionViewController {
                 DispatchQueue.main.async {
                     self.posts = posts
                     self.collectionView.reloadData()
-                }
-                
-                var userIdToUsername: [Int: String] = [:]
-                let dispatchGroup = DispatchGroup()
-                
-                for post in posts {
-                    dispatchGroup.enter()
                     
-                    self.userLoader.loadUser(with: post.userId) { user, error in
-                        dispatchGroup.leave()
-                        
-                        userIdToUsername[post.userId] = user?.username ?? "Unknown User"
+                    DispatchQueue.global(qos: .background).async {
+                        self.loadUsernamesAndAvatars()
                     }
-                }
-                
-                dispatchGroup.notify(queue: .main) {
-                    print("All task completed")
-                    // self.activityIndicatorView.stopAnimating()
-                    // self.posts = posts
-                    self.userIdToUsername = userIdToUsername
-                    self.collectionView.reloadData() // We are on Main Queue here, so no need to explicitly dispatch to Main Queue
                 }
             }
         }
     }
-
+    
+    private func loadUsernamesAndAvatars() {
+        var userIdToUsername: [Int: String] = [:]
+        var userIdToImageData: [Int: Data?] = [:]
+        
+        let dispatchGroup = DispatchGroup()
+        
+        for post in posts {
+            dispatchGroup.enter()
+            
+            self.userLoader.loadUser(with: post.userId) { user, error in
+                dispatchGroup.leave()
+                
+                userIdToUsername[post.userId] = user?.username ?? "Unknown User"
+                
+                if let userImage = user?.image {
+                    let imageUrl = URL(string: userImage)!
+                    let imageData = try? Data(contentsOf: imageUrl)
+                    
+                    userIdToImageData[post.userId] = imageData
+                }
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            print("All task completed")
+            // self.activityIndicatorView.stopAnimating()
+            self.userIdToUsername = userIdToUsername
+            self.userIdToImageData = userIdToImageData
+            self.collectionView.reloadData() // We are on Main Queue here, so no need to explicitly dispatch to Main Queue
+        }
+    }
+    
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -80,6 +96,10 @@ final class NewsFeedVC: UICollectionViewController {
         
         if let username = userIdToUsername[post.userId] {
             cell.username = username
+        }
+        
+        if let imageData = userIdToImageData[post.userId] {
+            cell.userImageData = imageData
         }
     
         return cell
