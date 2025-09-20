@@ -3,9 +3,11 @@ import UIKit
 final class NewsFeedVC: UICollectionViewController {
     
     private let loader: NewsFeedLoader
+    private var posts: [Post]
     
     init() {
         loader = NewsFeedLoader()
+        posts = []
         
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
     }
@@ -21,7 +23,10 @@ final class NewsFeedVC: UICollectionViewController {
         
         loader.loadPosts { posts, error in
             if let posts {
-                print(posts)
+                DispatchQueue.main.async {
+                    self.posts = posts
+                    self.collectionView.reloadData()
+                }
             }
         }
     }
@@ -29,7 +34,7 @@ final class NewsFeedVC: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return posts.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -38,8 +43,10 @@ final class NewsFeedVC: UICollectionViewController {
             for: indexPath
         ) as! NewsFeedCell
         
-        cell.titleLabel.text = "This is a Post Title"
-        cell.bodyLabel.text = "This is a Post Body"
+        let post = posts[indexPath.item]
+        
+        cell.titleLabel.text = post.title
+        cell.bodyLabel.text = post.body
     
         return cell
     }
